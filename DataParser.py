@@ -1,55 +1,45 @@
-import pandas
+
 import re 
+import csv
 
-##Imports that get added throughout the project will need to be added to specifications 
-
-#####file_Crawler()
-#goes through the data folder and makes an array for each grp 
-#this array can then be added to the comma_check to preformat the files
-
+#input for both should be the name of the group file including the path of data folder IE "data/class.GRP"
 
 ######creates commas for files that need it and ignores the rest 
-def comma_Check(files):
-    for x in files:
-        filename = x
-        with open(filename, 'r') as f:
-            txt = f.read() #.replace(r"\s+", ",")
-        with open(filename, 'w') as f:
-            txt = re.sub(r'\s+"', ",\"", txt)
-            f.write(re.sub(r'"\s+', "\",", txt))
-comma_Check(array)
 
-########csv Reader GOING TO NEED SOME CHANGES BEFORE FINAL IMPLEMENTATION 
+def comma_Check(files):
+        filename = []
+        with open(files, 'r') as f:
+                filename=f.read().split("\n")
+        filename.pop(0)
+        for element in filename:
+                with open("data/"+element, 'r') as f:
+                        txt = f.read() #.replace(r"\s+", ",")
+                with open("data/"+element, 'w') as f:
+                        txt = re.sub(r'\s+"', ",\"", txt)
+                        f.write(re.sub(r'"\s+', "\",", txt))
+
 def csv_Reader(files):
-    for x in files:
-        filename = x
+
+    filename = []
+    with open(files, 'r') as f:
+        filename=f.read().split("\n")
 # initializing the titles and rows list
-    fields = []
-    rows = []
+        
+        fields = []
+        rows = []
   
 # reading csv file
-    with open(filename, 'r') as csvfile:
+        filename.pop(0)
+        for element in filename:
+                with open("data/"+element, 'r') as csvfile:
     # creating a csv reader object
-         csvreader = csv.reader(csvfile)
+                        csvreader = csv.reader(csvfile)
+
       
     # extracting field names through first row
-        fields = next(csvreader)
-  
+                        fields = next(csvreader)
+                        rows.append(fields)
     # extracting each data row one by one
-        for row in csvreader:
-            rows.append(row)
-  
-    # get total number of rows
-        print("Total no. of rows: %d"%(csvreader.line_num))
-  
-# printing the field names
-    print('Field names are:' + ', '.join(field for field in fields))
-  
-#  printing first 5 rows
-    print('\nFirst 5 rows are:\n')
-    for row in rows[:1]:
-    # parsing each column of a row
-        for col in row:
-            print("%10s"%col),
-            print('\n')
-#add the return for a 3d array 
+                        for row in csvreader:
+                                rows.append(row)
+        return rows
