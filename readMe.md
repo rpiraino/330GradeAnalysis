@@ -15,3 +15,4 @@
 
 3. first lines of file are missing 2 commas 
 
+4. both ide and python need full file access permission (depending on security settings)
